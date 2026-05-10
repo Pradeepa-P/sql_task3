@@ -1,0 +1,165 @@
+-- Create Orders Table
+drop table orders;
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    quantity INT,
+    price DECIMAL(10,2)
+);
+
+-- Insert 5 Orders with Different Values
+INSERT INTO orders VALUES
+(1, 'Apple Juice', 5, 120.00),
+(2, 'Banana Chips', 2, 80.00),
+(3, 'Avocado Salad', 3, 450.00),
+(4, 'Orange Cake', 1, 600.00),
+(5, 'Almond Milk', 4, 300.00);
+
+-- Select Orders Where Quantity > 2
+SELECT *
+FROM orders
+WHERE quantity > 2;
+
+-- Select Orders Where Price Between 100 and 500
+SELECT *
+FROM orders
+WHERE price BETWEEN 100 AND 500;
+
+-- Fetch Orders with Product Name Starting with 'A'
+SELECT *
+FROM orders
+WHERE product_name LIKE 'A%';
+
+-- Fetch Orders Sorted by Quantity Descending
+SELECT *
+FROM orders
+ORDER BY quantity DESC;
+
+-- Find Average Order Price
+SELECT AVG(price) AS average_price
+FROM orders;
+
+-- Group Orders by Product Name and Show Total Sales
+SELECT
+    product_name,
+    SUM(quantity * price) AS total_sales
+FROM orders
+GROUP BY product_name;
+
+-- Sort Grouped Data by Total Sales Descending
+SELECT
+    product_name,
+    SUM(quantity * price) AS total_sales
+FROM orders
+GROUP BY product_name
+ORDER BY total_sales DESC;
+
+
+-- =====================================================
+-- SECTION 2: EVENTS TABLE
+-- =====================================================
+
+-- Create Events Table
+CREATE TABLE events (
+    id INT PRIMARY KEY,
+    event_name VARCHAR(100),
+    event_date DATE
+);
+
+-- Insert Events with Different Dates
+INSERT INTO events VALUES
+(1, 'Music Fest', '2026-06-15'),
+(2, 'Tech Conference', '2026-07-20'),
+(3, 'Sports Day', '2026-08-10');
+
+-- Display Current Date & Time
+SELECT NOW() AS current_datetime;
+
+-- Format Event Date Using DATE_FORMAT()
+SELECT
+    event_name,
+    DATE_FORMAT(event_date, '%d-%m-%Y') AS formatted_date
+FROM events;
+
+-- Extract YEAR and MONTH from Event Date
+SELECT
+    event_name,
+    YEAR(event_date) AS event_year,
+    MONTH(event_date) AS event_month
+FROM events;
+
+-- Use CONCAT() to Combine Event Name and Event Date
+SELECT
+    CONCAT(event_name, ' - ', event_date) AS event_details
+FROM events;
+
+-- First Normal Form (1NF)
+CREATE TABLE order_products_1nf (
+    order_id INT,
+    customer_name VARCHAR(50),
+    product_name VARCHAR(50)
+);
+
+INSERT INTO order_products_1nf VALUES
+(101, 'Ravi', 'Pen'),
+(101, 'Ravi', 'Notebook'),
+(102, 'Arun', 'Pencil'),
+(102, 'Arun', 'Eraser');
+
+
+-- Second Normal Form (2NF)
+
+-- Orders Table
+CREATE TABLE normalized_orders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(50)
+);
+
+INSERT INTO normalized_orders VALUES
+(101, 'Ravi'),
+(102, 'Arun');
+
+-- Order Details Table
+CREATE TABLE order_details (
+    order_id INT,
+    product_name VARCHAR(50)
+);
+
+INSERT INTO order_details VALUES
+(101, 'Pen'),
+(101, 'Notebook'),
+(102, 'Pencil'),
+(102, 'Eraser');
+
+
+-- =====================================================
+-- 3NF EXAMPLE
+-- =====================================================
+
+-- Table NOT in 3NF:
+-- StudentID | StudentName | DeptID | DeptName
+
+
+-- Students Table
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(50),
+    dept_id VARCHAR(10)
+);
+
+INSERT INTO students VALUES
+(1, 'Ajay', 'D1'),
+(2, 'Priya', 'D2');
+
+-- Departments Table
+CREATE TABLE departments (
+    dept_id VARCHAR(10) PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+INSERT INTO departments VALUES
+('D1', 'CSE'),
+('D2', 'ECE');
+
+
+select * from departments;
